@@ -109,7 +109,7 @@ function parseMissingLines(missing) {
     }
 
     if (begin == prev) {
-      intervals.push(begin.toString);
+      intervals.push(begin.toString());
     } else {
       intervals.push(begin.toString() + '-' + prev.toString());
     }
@@ -119,7 +119,7 @@ function parseMissingLines(missing) {
 
   if (begin != null) {
     if (begin == prev) {
-      intervals.push(begin.toString);
+      intervals.push(begin.toString());
     } else {
       intervals.push(begin.toString() + '-' + prev.toString());
     }
