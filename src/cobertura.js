@@ -97,7 +97,7 @@ function parseMissingLines(missing) {
   let begin = null;
   let prev = 0;
   missing.forEach(function(item, index, array) {
-    if (begin != null) {
+    if (begin == null) {
       begin = item;
       prev = item;
       return;
@@ -116,6 +116,14 @@ function parseMissingLines(missing) {
     begin = null;
     prev = item;
   });
+
+  if (begin != null) {
+    if (begin == prev) {
+      intervals.push(begin.toString);
+    } else {
+      intervals.push(begin.toString() + '-' + prev.toString());
+    }
+  }
   return intervals;
 }
 
