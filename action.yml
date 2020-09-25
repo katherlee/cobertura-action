@@ -19,6 +19,10 @@ inputs:
     description: 'Show line rate as specific column.'
     required: true
     default: false
+  show_missing_lines:
+    description: 'Show uncovered lines as specific column.'
+    required: true
+    default: false
   show_branch:
     description: 'Show branch rate as specific column.'
     required: true

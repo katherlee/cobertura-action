@@ -25,7 +25,8 @@ async function processCoverage(path, options) {
       return {
         ...calculateRates(klass),
         filename: klass["filename"],
-        name: klass["name"]
+        name: klass["name"],
+        missing: generateUnhitLines(klass.lines)
       };
     })
     .filter(file => options.skipCovered === false || file.total < 100);
@@ -66,6 +67,46 @@ function calculateRates(element) {
     line,
     branch
   };
+}
+
+function generateUnhitLines(lines) {
+  const unhit = lines
+    .filter(
+      line => {
+        return parseInt(line["hits"]) == 1;
+      })
+    .map(
+      line => {
+        return parseInt(line["number"]);
+      });
+  return parseMissingLines(unhit);
+}
+
+function parseMissingLines(missing) {
+  let intervals = [];
+  let begin = null;
+  let prev = 0;
+  missing.forEach(function(item, index, array) {
+    if (begin != null) {
+      begin = item;
+      prev = item;
+      return;
+    }
+
+    if (item == prev + 1) {
+      prev = item;
+      return;
+    }
+
+    if (begin == prev) {
+      intervals.push(begin.toString);
+    } else {
+      intervals.push(begin.toString() + '-' + prev.toString());
+    }
+    begin = null;
+    prev = item;
+  });
+  return intervals;
 }
 
 module.exports = {

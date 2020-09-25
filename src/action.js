@@ -35,6 +35,9 @@ async function action(payload) {
     core.getInput("skip_covered", { required: true })
   );
   const showLine = JSON.parse(core.getInput("show_line", { required: true }));
+  const showMissingLines = JSON.parse(
+    core.getInput("show_missing_lines", { require: true })
+  );
   const showBranch = JSON.parse(
     core.getInput("show_branch", { required: true })
   );
@@ -57,6 +60,7 @@ async function action(payload) {
   const comment = markdownReport(report, commit, {
     minimumCoverage,
     showLine,
+    showMissingLines,
     showBranch,
     showClassNames,
     filteredFiles: changedFiles,
@@ -69,6 +73,7 @@ function markdownReport(report, commit, options) {
   const {
     minimumCoverage = 100,
     showLine = false,
+    showMissingLines = false,
     showBranch = false,
     showClassNames = false,
     filteredFiles = null,
@@ -89,6 +94,7 @@ function markdownReport(report, commit, options) {
       `\`${fileTotal}%\``,
       showLine ? `\`${fileLines}%\`` : undefined,
       showBranch ? `\`${fileBranch}%\`` : undefined,
+      showMissingLines ? file.missing.join(', ') : undefined,
       status(fileTotal)
     ]);
   }
@@ -112,6 +118,7 @@ function markdownReport(report, commit, options) {
       "Coverage",
       showLine ? "Lines" : undefined,
       showBranch ? "Branches" : undefined,
+      showMissingLines ? "Missing lines" : undefined,
       " "
     ],
     [
@@ -119,6 +126,7 @@ function markdownReport(report, commit, options) {
       ":-:",
       showLine ? ":-:" : undefined,
       showBranch ? ":-:" : undefined,
+      showMissingLines ? ":-:" : undefined,
       ":-:"
     ],
     [
@@ -126,6 +134,7 @@ function markdownReport(report, commit, options) {
       `\`${total}%\``,
       showLine ? `\`${linesTotal}%\`` : undefined,
       showBranch ? `\`${branchTotal}%\`` : undefined,
+      showMissingLines ? " " : undefined,
       status(total)
     ],
     ...files
