@@ -83,7 +83,7 @@ function generateUnhitLines(lines) {
   const unhit = lines
     .filter(
       line => {
-        return parseInt(line["hits"]) == 1;
+        return parseInt(line["hits"]) == 0;
       })
     .map(
       line => {
