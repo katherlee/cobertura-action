@@ -81,37 +81,40 @@ function calculateRates(element) {
 
 function generateUnhitLines(lines) {
   const unhit = lines
+    .map((line, index) => {
+      return {
+        index: index,
+        number: parseInt(line["number"]),
+        hits: parseInt(line["hits"])
+      };
+    })
     .filter(
-      line => {
-        return parseInt(line["hits"]) == 0;
-      })
-    .map(
-      line => {
-        return parseInt(line["number"]);
+      item => {
+        return item.hits == 0;
       });
   return parseMissingLines(unhit);
 }
 
-function parseMissingLines(missing) {
+function parseMissingLines(lines) {
   let intervals = [];
   let begin = null;
   let prev = 0;
-  missing.forEach(function(item, index, array) {
+  lines.forEach(item => {
     if (begin == null) {
       begin = item;
       prev = item;
       return;
     }
 
-    if (item == prev + 1) {
+    if (item.index == prev.index + 1) {
       prev = item;
       return;
     }
 
     if (begin == prev) {
-      intervals.push(begin.toString());
+      intervals.push(begin.number.toString());
     } else {
-      intervals.push(begin.toString() + '-' + prev.toString());
+      intervals.push(begin.number.toString() + '-' + prev.number.toString());
     }
     begin = null;
     prev = item;
@@ -119,9 +122,9 @@ function parseMissingLines(missing) {
 
   if (begin != null) {
     if (begin == prev) {
-      intervals.push(begin.toString());
+      intervals.push(begin.number.toString());
     } else {
-      intervals.push(begin.toString() + '-' + prev.toString());
+      intervals.push(begin.number.toString() + '-' + prev.number.toString());
     }
   }
   return intervals;
