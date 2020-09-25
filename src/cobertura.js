@@ -26,7 +26,7 @@ async function processCoverage(path, options) {
         ...calculateRates(klass),
         filename: klass["filename"],
         name: klass["name"],
-        missing: generateUnhitLines(klass.lines)
+        missing: generateUnhitLines(processLines(klass))
       };
     })
     .filter(file => options.skipCovered === false || file.total < 100);
@@ -56,6 +56,16 @@ function processPackage(packageObj) {
   } else {
     return [packageObj.class];
   }
+}
+
+function processLines(element) {
+  if (element.lines.line && element.lines.line instanceof Array) {
+    return element.lines.line;
+  }
+  if (element.lines.line) {
+    return [element.lines.line];
+  }
+  return [];
 }
 
 function calculateRates(element) {
