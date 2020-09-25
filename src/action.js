@@ -126,7 +126,7 @@ function markdownReport(report, commit, options) {
       ":-:",
       showLine ? ":-:" : undefined,
       showBranch ? ":-:" : undefined,
-      showMissingLines ? ":-:" : undefined,
+      showMissingLines ? "-" : undefined,
       ":-:"
     ],
     [
