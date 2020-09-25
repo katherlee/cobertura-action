@@ -85,7 +85,7 @@ function markdownReport(report, commit, options) {
     const fileLines = Math.round(file.line);
     const fileBranch = Math.round(file.branch);
     files.push([
-      showClassNames ? file.name : file.filename,
+      showClassNames ? `\`${file.name}\`` : `\`${file.filename}\``,
       `\`${fileTotal}%\``,
       showLine ? `\`${fileLines}%\`` : undefined,
       showBranch ? `\`${fileBranch}%\`` : undefined,
